@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Hello World!"
-date:   2014-10-26 23:02:03
+date:   2014-10-26 21:02:01 UTC
 categories: jekyll
 ---
 
