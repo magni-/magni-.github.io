@@ -9,3 +9,7 @@ github_username:  magni-
 
 # Build settings
 markdown: kramdown
+
+# Jekyll
+paginate: 5
+paginate_path: "/page-:num"
