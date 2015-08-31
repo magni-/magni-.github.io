@@ -1,0 +1,52 @@
+---
+layout: post
+title:  "Making your commits clean and simple"
+date:   2015-08-31 04:03:02 UTC
+categories: git
+---
+
+When I first started using `git`, I quickly learned about committing with `-a` (`--all`). A flag that would let me spend less time in the git CLI, amazing!<sup>[_[1]_](#footnote-1)</sup> I would add, edit, and delete code all over the place, `git commit -am "some bad commit message"`, and that was it! I was soon using `-a` for every single commit.
+
+I learned the cons of abusing `-a` when I started working on larger projects with a more storied past, and had to resort to `git blame` to try and understand the logic behind any particular [WTF](http://www.osnews.com/story/19266/WTFs_m) that I encountered. I would sometimes quickly find the answer to my initial incomprehension in the blamed commit, but all too often I would only be left with more questions. This was primarily because these commits were too [complex](https://www.youtube.com/watch?v=rI8tNMsozo0). They were doing more than one thing, which meant that the commit message did not help, and that parsing the commit diff was tough and time-consuming.
+
+I recently stumbled upon one such monster commit<sup>[_[2]_](#footnote-2)</sup> while investigating a WTF, which prompted me to write this post. **_There is a better way to commit your code!_**
+
+The first obvious step is to not use `-a`, and instead add files individually. That helps to avoid committing completely separate changes in  different files together, but what about when you have separate changes in the same file? That's where the `-p` (`--patch`) option saves the day!
+
+Let's use an example to illustrate the rest of this post:
+
+While fixing a bug in the function `foo` defined in `bar.py`, we notice that one of the functions called by `foo` has a mispelled name. Following the [Boy Scout Rule](http://programmer.97things.oreilly.com/wiki/index.php/The_Boy_Scout_Rule), we decide to fix the typo and rename the method, which is being called all over `bar.py`.
+
+We go to commit our changes:
+
+    git add bar.py
+    git commit -m "Fix bug in foo"
+
+Now, when someone else goes to blame `bar.py`, they will see _"Fix bug in foo"_ all over the place. And when they `git show` to see what the bug was, they will have to scroll through a lot of renames before finally finding what they came to see.
+
+Let's say we'd used `-p` instead:
+
+    git add -p bar.py
+
+`-p` allows us to stage individual _hunks_ rather than entire files. When adding files with the flag toggled, we enter git's interactive mode, where we are asked, hunk by hunk, whether we want to stage the displayed changes. We can now stage all of the renaming-related hunks (replying `y` for these), and leave out the bugfix for its own commit (replying `n` for those).
+
+    git commit -m "Rename mispelled function"
+    git add -p bar.py
+    git commit -m "Fix bug in foo"
+
+`git blame` now tells a truer story, and our bugfix commit is as simple as it gets.
+
+Using `-p` can also help you catch a forgotten debugger statement or anything else that you might overlook when blindly `git add`ing or nonchalantly scrolling through a `git diff` wall of text.
+
+If a particular hunk contains changes you want to stage and others you don't, you can try splitting it by replying `s`. If that doesn't work, you can manually edit a hunk by replying `e`. If you accidentally stage a hunk that you had intended not to, you'll be delighted to learn that `git reset` also takes in `-p`, which works in the exact same manner as it does for `git add`.
+
+Coupled with `git rebase -i`, this will make you git history clean and simple: _one commit does one thing_. It makes pull request reviewing much smoother, and code archeology much saner.
+
+---
+
+
+<a name="footnote-1">1.</a> This is "new to git, scared of the CLI"-me talking. I love the CLI, it's an amazing tool, despite being scary for neophytes like past-me.
+
+<a name="footnote-2">2.</a> For the curious, this commit had 944 additions and 1,007 deletions spread over 10 files. The commit message? _"huge speed improvements, plus big code cleanup"_.
+
+[`git-add` documentation](http://git-scm.com/docs/git-add)
