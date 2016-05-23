@@ -16,7 +16,7 @@ If you've followed GitHub's instructions though, you may run into this error:
 
 Fortunately, all you need to do is move everything out, re-run the command, and move everything back in.
 
-{% highlight bash %}
+{% highlight nolang %}
 mysite$ mkdir ~/tmp
 mysite$ mv * ~/tmp
 mysite$ jekyll new .
