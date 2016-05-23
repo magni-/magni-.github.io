@@ -3,6 +3,7 @@ layout: post
 title:  "Making your commits clean and simple"
 date:   2015-08-31 04:03:02 UTC
 categories: git
+comments: true
 ---
 
 When I first started using `git`, I quickly learned about committing with `-a` (`--all`). A flag that would let me spend less time in the git CLI, amazing!<sup>[_[1]_](#footnote-1)</sup> I would add, edit, and delete code all over the place, `git commit -am "some bad commit message"`, and that was it! I was soon using `-a` for every single commit.

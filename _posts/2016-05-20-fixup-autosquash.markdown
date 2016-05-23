@@ -3,6 +3,7 @@ layout: post
 title:  "Making git history great again"
 date:   2016-05-20 14:04:03 UTC
 categories: git
+comments: true
 ---
 
 My [previous post]({% post_url 2015-08-31-git-patch %}) covered how to write bitesize commits (spoiler: use `git add -p`).
