@@ -56,6 +56,13 @@ figure > img {
 
 figcaption {
     font-size: $small-font-size;
+    text-align: center;
+    color: $grey-color;
+}
+
+div.highlighter-rouge + figcaption {
+    margin-top: $spacing-unit * -0.4;
+    margin-bottom: $spacing-unit * 0.4;
 }
 
 
